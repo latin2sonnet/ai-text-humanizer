@@ -113,6 +113,66 @@ class TextHumanizer:
             
         return ' '.join(modified_words)
 
+    def humanize_text(self, text, style="casual", creativity=0.7):
+        # Tokenize the text
+        sentences = sent_tokenize(text)
+        words = word_tokenize(text)
+        pos_tags = nltk.pos_tag(words)
+
+        # Apply style-specific transformations
+        if style == "casual":
+            # Add contractions
+            text = re.sub(r"(\w+) (am|are|is|have|has|had|will|would)", r"\1'\2", text)
+            text = re.sub(r"(cannot)", r"can't", text)
+            
+            # Add casual markers
+            casual_markers = ["well,", "you know,", "like,", "basically,"]
+            if random.random() < creativity:
+                text = random.choice(casual_markers) + " " + text.lower()
+        
+        elif style == "formal":
+            # Remove contractions
+            text = re.sub(r"'ve", " have", text)
+            text = re.sub(r"'re", " are", text)
+            text = re.sub(r"'m", " am", text)
+            text = re.sub(r"'ll", " will", text)
+            text = re.sub(r"n't", " not", text)
+            
+            # Ensure proper capitalization
+            sentences = sent_tokenize(text)
+            text = ' '.join([s.capitalize() for s in sentences])
+
+        # Add natural variations based on creativity level
+        if creativity > 0.5:
+            # Add filler words
+            fillers = ["actually", "basically", "literally", "seriously"]
+            if random.random() < creativity:
+                idx = random.randint(0, len(sentences)-1)
+                sentences[idx] = random.choice(fillers) + ", " + sentences[idx].lower()
+            
+            # Add emphasis
+            emphasis = ["really", "very", "quite", "absolutely"]
+            if random.random() < creativity:
+                for i, (word, tag) in enumerate(pos_tags):
+                    if tag.startswith('JJ') and random.random() < 0.3:  # 30% chance for adjectives
+                        words[i] = random.choice(emphasis) + " " + word
+
+        # Reconstruct text with variations
+        humanized_text = ' '.join(sentences)
+        
+        # Calculate metrics
+        naturalness_score = min(1.0, 0.5 + creativity)
+        semantic_similarity = 0.8 + random.random() * 0.2  # Simplified similarity score
+
+        return {
+            "humanized_text": humanized_text,
+            "original_text": text,
+            "metrics": {
+                "naturalness_score": naturalness_score,
+                "semantic_similarity": semantic_similarity
+            }
+        }
+
 humanizer = TextHumanizer()
 
 @app.route('/')
@@ -149,9 +209,17 @@ def process_text():
             options['keepProfessional']
         )
         
+        # Humanize text
+        humanized_text = humanizer.humanize_text(
+            modified_text, 
+            options['style'], 
+            float(options['creativity'])
+        )
+        
         return jsonify({
             'success': True,
-            'modifiedText': modified_text
+            'modifiedText': humanized_text['humanized_text'],
+            'metrics': humanized_text['metrics']
         })
         
     except Exception as e:

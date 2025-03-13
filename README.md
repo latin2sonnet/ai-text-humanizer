@@ -1,21 +1,31 @@
 # AI Text Humanizer
 
-A powerful API service that transforms AI-generated text into more natural, human-like writing while maintaining the original meaning and intent.
+A powerful API service that transforms AI-generated text into more natural, human-like writing while maintaining the original meaning and intent. This project uses local NLP techniques and transformer models, requiring no external API keys.
 
 ## Features
 
 - Text humanization using advanced NLP techniques
+- Local processing with no external API dependencies
 - Maintains original meaning while improving naturalness
 - Easy-to-use REST API
 - Web interface for testing and demonstration
 - Customizable humanization parameters
+- Sentiment analysis and text metrics
+
+## How it Works
+
+The humanization process uses several NLP techniques:
+1. NLTK for text tokenization and POS tagging
+2. Transformers for sentiment analysis and text generation
+3. Custom rules for style-specific transformations
+4. Natural variation injection based on creativity level
 
 ## Setup
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/latin2sonnet/AI-Text-Humanizer.git
-cd AI-Text-Humanizer
+git clone https://github.com/latin2sonnet/ai-text-humanizer.git
+cd ai-text-humanizer
 ```
 
 2. Create and activate a virtual environment:
@@ -34,13 +44,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-4. Set up environment variables:
-Create a `.env` file in the root directory with your OpenAI API key:
-```
-OPENAI_API_KEY=your_api_key_here
-```
-
-5. Start the server:
+4. Start the server:
 ```bash
 cd backend
 python app.py
@@ -70,7 +74,9 @@ The server will start at `http://localhost:5000`
     "original_text": "The input text",
     "metrics": {
         "naturalness_score": 0.85,
-        "semantic_similarity": 0.92
+        "semantic_similarity": 0.92,
+        "sentiment_original": "POSITIVE",
+        "sentiment_humanized": "POSITIVE"
     }
 }
 ```
