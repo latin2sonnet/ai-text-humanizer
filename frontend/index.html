@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Text Humanizer</title>
+    <link rel="stylesheet" type="text/css" href="/styles.css">
+</head>
+<body>
+    <header>
+        <h1>AI Text Humanizer</h1>
+        <p>Transform AI-generated text into more natural, human-like writing</p>
+    </header>
+    
+    <main>
+        <section id="input-section">
+            <textarea id="input-text" placeholder="Paste your AI-generated text here..."></textarea>
+            
+            <div id="options">
+                <label>
+                    <input type="checkbox" id="add-errors">
+                    Add human-like errors
+                    <div class="tooltip">
+                        <span>Introduces occasional typos and grammatical errors to make the text appear more natural</span>
+                    </div>
+                </label>
+                
+                <label>
+                    <input type="checkbox" id="keep-professional">
+                    Maintain professional tone
+                    <div class="tooltip">
+                        <span>Ensures the text remains formal and professional while being humanized</span>
+                    </div>
+                </label>
+                
+                <label>
+                    Vocabulary Level:
+                    <select id="vocabulary-level">
+                        <option value="8">8th Grade</option>
+                        <option value="10">10th Grade</option>
+                        <option value="12">12th Grade</option>
+                    </select>
+                    <div class="tooltip">
+                        <span>Adjusts the complexity of vocabulary used in the text</span>
+                    </div>
+                </label>
+            </div>
+            
+            <button id="process-text">Humanize Text</button>
+        </section>
+        
+        <section id="output-section">
+            <textarea id="output-text" readonly placeholder="Humanized text will appear here..."></textarea>
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 AI latin2sonnet</p>
+    </footer>
+    
+    <script src="/script.js"></script>
+</body>
+</html>
